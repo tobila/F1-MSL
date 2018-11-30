@@ -30,8 +30,14 @@ console.log("Listening on port ", port);
 // });
 
 ergast.getRaceResults(2004, 1, function(err, raceResults) {
-  if (!err) console.log(raceResults.driverResults[0].fastestLap.time.time);
+  if (!err) console.log(timestampToMillis(raceResults.driverResults[0].fastestLap.time.time))
 });
+
+function timestampToMillis(timeStamp){
+  var split1 = timeStamp.split(":")
+  var split2 = split1[1].split(".")
+  return split1[0]* 60000 + split2[0] * 1000 + Number(split2[1]);
+}
 
 // ergast.getQualifyingResults(2010, 1, function(err, qualifyingResults) {
 //   if (!err) console.log(qualifyingResults);
