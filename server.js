@@ -2,6 +2,7 @@ var express = require("express"),
     app = express();
 var ErgastClient = require('ergast-client'),
     ergast = new ErgastClient();
+var Request = require("request");
 
 var port = process.env.PORT || 8080;
 
@@ -38,6 +39,16 @@ function timestampToMillis(timeStamp){
   var split2 = split1[1].split(".")
   return split1[0]* 60000 + split2[0] * 1000 + Number(split2[1]);
 }
+
+
+
+Request.get("http://ergast.com/api/f1/2011/5/laps.json", (error, response, body) => {
+    if(error) {
+        return console.log(error);
+    }
+    var jsonObj = JSON.parse(body)
+    console.log(jsonObj.MRData)
+});
 
 // ergast.getQualifyingResults(2010, 1, function(err, qualifyingResults) {
 //   if (!err) console.log(qualifyingResults);
