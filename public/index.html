@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,14 +20,15 @@
 
     <br><br>
 
+
     <div class="container">
 
       <div class="card text-center">
         <div class="card-header">
           Lap-Times (Main-View)
         </div>
-        <div class="card-body">
-          <img src="img/3d-linechart.png">
+        <div id="mainView">
+          <!-- <img src="img/3d-linechart.png"> -->
         </div>
       </div>
 
@@ -91,6 +94,89 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
 
 
+
+
+
+
+    <script>
+    var xValues = ['A', 'B', 'C', 'D', 'E'];
+
+    var yValues = ['W', 'X', 'Y', 'Z'];
+
+    var zValues = [
+      [0.00, 0.50, 0.75, 0.75, 0.00],
+      [0.00, 0.00, 0.75, 0.75, 0.00],
+      [0.75, 0.75, 0.75, 0.75, 0.75],
+      [0.00, 0.00, 0.00, 0.75, 0.00]
+    ];
+
+    var colorscaleValue = [
+      [0, '#3D9970'],
+      [1, '#001f3f']
+    ];
+
+    var data = [{
+      x: xValues,
+      y: yValues,
+      z: zValues,
+      type: 'heatmap',
+      colorscale: colorscaleValue,
+      showscale: false
+    }];
+
+    var layout = {
+      title: 'Annotated Heatmap',
+      annotations: [],
+      xaxis: {
+        ticks: '',
+        side: 'top'
+      },
+      yaxis: {
+        ticks: '',
+        ticksuffix: ' ',
+        width: 700,
+        height: 700,
+        autosize: false
+      }
+    };
+
+    for ( var i = 0; i < yValues.length; i++ ) {
+      for ( var j = 0; j < xValues.length; j++ ) {
+        var currentValue = zValues[i][j];
+        if (currentValue != 0.0) {
+          var textColor = 'white';
+        }else{
+          var textColor = 'black';
+        }
+        var result = {
+          xref: 'x1',
+          yref: 'y1',
+          x: xValues[j],
+          y: yValues[i],
+          text: zValues[i][j],
+          font: {
+            family: 'Arial',
+            size: 12,
+            color: 'rgb(50, 171, 96)'
+          },
+          showarrow: false,
+          font: {
+            color: textColor
+          }
+        };
+        layout.annotations.push(result);
+      }
+    }
+
+    Plotly.newPlot('mainView', data, layout);
+    </script>
+
+
+    <script>
+      $.get('/testData', {}, function(data){
+        console.log(data)
+      });
+    </script>
 </body>
 
 </html>

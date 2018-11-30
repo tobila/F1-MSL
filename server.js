@@ -17,18 +17,13 @@ app.listen(port);
 console.log("Listening on port ", port);
 
 
-// Get the information of the drivers of 2014
-// ergast.getDrivers(2014, function(err, drivers) {
-//     if (!err) console.log(drivers);
-// });
+// Example sending data to html
+app.get('/testData', function(req, res){
+  var yValues = ['W', 'X', 'Y', 'Z'];
+  res.send(yValues);
+});
 
-// ergast.getLaps(2017, 1, function(err, laps) {
-//   if (!err) console.log(laps);
-// });
 
-// ergast.getLap(2017, 1, 22, function(err, lap) {
-//   if (!err) console.log(lap);
-// });
 
 ergast.getRaceResults(2004, 1, function(err, raceResults) {
   if (!err) console.log(timestampToMillis(raceResults.driverResults[0].fastestLap.time.time))
@@ -41,16 +36,14 @@ function timestampToMillis(timeStamp){
 }
 
 
-
-Request.get("http://ergast.com/api/f1/2011/5/laps.json", (error, response, body) => {
-    if(error) {
-        return console.log(error);
-    }
-    var jsonObj = JSON.parse(body)
-    console.log(jsonObj.MRData)
-});
-
-// ergast.getQualifyingResults(2010, 1, function(err, qualifyingResults) {
-//   if (!err) console.log(qualifyingResults);
+// Example API-Request
+// Request.get("http://ergast.com/api/f1/2011/5/laps.json?limit=0", (error, response, body) => {
+//     if(error) {
+//         return console.log(error);
+//     }
+//     var jsonObj = JSON.parse(body)
+//     console.log(jsonObj.MRData)
 // });
+
+
 // require("cf-deployment-tracker-client").track();
