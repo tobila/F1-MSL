@@ -3,6 +3,7 @@ var express = require("express"),
 var ErgastClient = require('ergast-client'),
     ergast = new ErgastClient();
 var Request = require("request");
+var async = require("async");
 
 var port = process.env.PORT || 8080;
 
@@ -34,6 +35,60 @@ function timestampToMillis(timeStamp){
   var split2 = split1[1].split(".")
   return split1[0]* 60000 + split2[0] * 1000 + Number(split2[1]);
 }
+
+
+// HEATMAP FASTEST LAPTIMES:
+var raceNames = [];
+var yearArray = [];
+var fastestLaps = [];
+
+var q = async.queue(function(task, callback) {
+  Request.get(task.url, (error, response, body) => {
+      if(error) {
+          return console.log(error);
+      }
+      var jsonObj = JSON.parse(body);
+      var races = jsonObj.MRData.RaceTable.Races;
+
+      for (var i = 0, len = races.length; i < len; i++) {
+        var locality = races[i].Circuit.Location.locality;
+        var country = races[i].Circuit.Location.country;
+        var raceName = locality+", "+country;
+        // var indexOfRace =
+        if(raceNames.indexOf(raceName) == -1){
+          raceNames.push(raceName);
+          fastestLaps[raceNames.indexOf(raceName)] = [];
+        }
+
+        var fastestLap;
+        try{
+          fastestLap = timestampToMillis(races[i].Results[0].FastestLap.Time.time);
+        } catch(e){
+          fastestLap = "";
+        }
+
+        fastestLaps[raceNames.indexOf(raceName)][task.counter] = fastestLap;
+      }
+      // console.log(raceNames);
+      // console.log(fastestLaps);
+  });
+  callback();
+}, 5);
+
+
+for (var i = 0; i < 15; i++) {
+  var year = 2004+i;
+  yearArray.push("|"+year+"|");
+  var requestURL = "http://ergast.com/api/f1/"+year+"/results/1.json"
+  q.push({ url: requestURL, counter:i }, function(err) {
+    // console.log('finished processing #'+i);
+  });
+}
+
+
+app.get('/fastestLapsHeatmap', function(req, res){
+  res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
+});
 
 
 // Example API-Request
