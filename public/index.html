@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <br><br>
+      <!-- <br><br>
 
       <div class="card text-center">
         <div class="card-header">
@@ -67,7 +67,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <br><br>
 
@@ -146,7 +146,6 @@
         Plotly.newPlot('mainView', data, layout);
 
         laptimesPlot.on('plotly_click', function(data){
-          console.log(data.points);
           var clickData = data.points[0];
           var getYear = clickData.pointIndex[1];
           var getRace = clickData.pointIndex[0];
@@ -156,18 +155,16 @@
 
 
           $.get('/getDetailsViewData', {raceIndex: getRace, yearIndex: getYear}, function(data){
-            console.log(data)
-
             var detailsHeader = document.getElementById("detailsHeader");
+
+            // HIER FUNKTIOSAUFRUF FISHER-YATESSHUFFLE:
+            // Sortiertes Startarray: data.start
+            // Vermischtes Endarray: data.end
+
             detailsHeader.innerHTML = "Details for Race "+race+" "+year;
-            window.location.href = "index.html#detailsView";
+            window.location.href = "index.html#detailsHeader";
           });
 
-          // var pts = '';
-          // for(var i=0; i < data.points.length; i++){
-          //   pts = 'x = '+data.points[i].x +'\ny = '+ data.points[i].y.toPrecision(4) + '\n\n';
-          // }
-          // alert('Closest point clicked:\n\n'+pts);
         });
       });
     </script>
@@ -180,7 +177,6 @@
     </script>
 
 
-    <body>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
 

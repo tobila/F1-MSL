@@ -85,18 +85,74 @@ for (var i = 0; i < 15; i++) {
   });
 }
 
-
 app.get('/fastestLapsHeatmap', function(req, res){
   res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
 });
+//END HEATMAP FASTEST LAPTIMES
+
+
+
+
+// FISHER YATES SHUFFLE (RaceResult & QualResult):
+var raceResults = {};
+var qFisherYates = async.queue(function(task, callback) {
+  Request.get(task.url, (error, response, body) => {
+      if(error) {
+          return console.log(error);
+      }
+      var jsonObj = JSON.parse(body);
+      var races = jsonObj.MRData.RaceTable.Races;
+      raceResults[task.year] = races;
+      // {
+      //   year:task.year
+      //   task.year:races
+      // };
+
+  });
+  callback();
+}, 5);
+
+//callback
+// qFisherYates.drain = function() {
+//     console.log('all items have been processed');
+//     console.log(raceResults);
+// };
+
+for (var i = 0; i < 15; i++) {
+  var year = 2004+i;
+  yearArray.push("|"+year+"|");
+  var requestURL = "http://ergast.com/api/f1/"+year+"/results.json?limit=1000";
+  qFisherYates.push({ url: requestURL, year:year }, function(err) {
+    // console.log('finished processing #'+i);
+  });
+}
 
 app.get('/getDetailsViewData', function(req, res){
-  console.log(req.query);
-  console.log(raceNames[req.query.raceIndex]);
-  console.log(yearArray[req.query.yearIndex]);
-  res.send("");
+  var yatesShuffleStart = [];
+  var yatesShuffleEnd = [];
+
+  var requestedYear = yearArray[req.query.yearIndex].substring(1, 5);
+  var tmp = raceNames[req.query.raceIndex].split(/[ ,]+/);
+  var requestedRaceCountry = tmp[1];
+  var requestedRaceLocality = tmp[0];
+  var results = raceResults[requestedYear]
+
+  for(var i=0; i < results.length; i++){
+    var circuitInfos = results[i].Circuit.Location;
+    var resultInfos = results[i].Results;
+
+    if(circuitInfos.locality == requestedRaceLocality && circuitInfos.country == requestedRaceCountry){
+      for(var k=0; k < resultInfos.length; k++){
+        yatesShuffleStart.push(resultInfos[k].position);
+        yatesShuffleEnd.push(resultInfos[k].grid);
+      }
+    }
+  }
+
+  res.send({start:yatesShuffleStart, end:yatesShuffleEnd});
   // res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
 });
+//END FISHER YATES SHUFFLE (RaceResult & QualResult)
 
 
 // Example API-Request
