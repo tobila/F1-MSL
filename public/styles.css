@@ -1,3 +1,9 @@
-.helloInput {
-  width: 200px;
+body {
+  position: relative;
+}
+
+.line {
+  stroke: #000;
+  stroke-width: 1.5px;
+  stroke-linecap: round;
 }

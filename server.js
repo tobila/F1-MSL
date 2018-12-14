@@ -90,6 +90,14 @@ app.get('/fastestLapsHeatmap', function(req, res){
   res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
 });
 
+app.get('/getDetailsViewData', function(req, res){
+  console.log(req.query);
+  console.log(raceNames[req.query.raceIndex]);
+  console.log(yearArray[req.query.yearIndex]);
+  res.send("");
+  // res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
+});
+
 
 // Example API-Request
 // Request.get("http://ergast.com/api/f1/2011/5/laps.json?limit=0", (error, response, body) => {
