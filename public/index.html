@@ -92,16 +92,96 @@
     </div>
 
 
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
 
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script>
 
+    function liveShuffle(end) {
+                  console.log(end)
+      // var mix = ["0","1","2","3","4","6","7","8","5","9"],
+          var n = end.length
+          array = d3.range(n),
+          copys = shuffle(end.slice()).reverse();
 
+          var margin = {top: 100, right: 40, bottom: 100, left: 40},
+              width = 400 - margin.left - margin.right,
+              height = 400 - margin.top - margin.bottom;
 
+          var y = d3.scale.ordinal()
+            .domain([1, 0])
+            .rangeRoundBands([height, 0], .3);
 
+          var x = d3.scale.ordinal()
+              .domain(d3.range(n))
+              .rangePoints([0, width]);
+
+          var a = d3.scale.linear()
+              .domain([0, n - 1])
+              .range([-45, 45]);
+
+          var svg = d3.select("#liveShuffle").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          var line = svg.append("g")
+              .attr("class", "line")
+            .selectAll("line")
+              .data(array.map(function(v, i) {
+              return {
+                value: v,
+                index: i,
+                array: 0
+              };
+            }))
+            .enter().append("line")
+              .attr("transform", transform)
+              .attr("y2", -y.rangeBand());
+
+            var line0 = line[0],
+                line1 = new Array(n);
+
+            var transition = d3.transition()
+                .duration(200)
+                .each("start", function start() {
+                  var copy = copys.pop(),
+                      i = copy[0], //from
+                      j = copy[1], //to
+                      e = line1[j] = line0[i],
+                      d = e.__data__;
+                      d.index = j;
+                      d.array = (d.array + 1) & 1;
+                      // console.log("start: " +i)
+                      // console.log("Nach: j = "+ j)
+                  transition.each(function() { d3.select(e).transition().attr("transform", transform); });
+                  if (copys.length) transition = transition.transition().each("start", start);
+                });
+
+          function transform(d) {
+            return "translate(" + x(d.index) + "," + y(d.array) + ")rotate(" + a(d.value) + ")";
+          }
+
+          function shuffle(mix) {
+            var copys = [],
+                m = mix.length;
+
+            while (m) {
+            p = mix[(m--)-1];
+            // console.log("Von: p = " +p)
+            // console.log("Nach: m = "+ m)
+            copys.push([p-1, m]);
+            }
+            return copys;
+          }
+    }
+    </script>
 
     <script>
       $.get('/fastestLapsHeatmap', {}, function(data){
@@ -158,6 +238,7 @@
             // HIER FUNKTIOSAUFRUF FISHER-YATESSHUFFLE:
             // Sortiertes Startarray: data.start
             // Vermischtes Endarray: data.end
+            liveShuffle(data.end)
 
             detailsHeader.innerHTML = "Details for Race "+race+" "+year;
             window.location.href = "index.html#detailsHeader";
@@ -175,103 +256,11 @@
       });
     </script>
 
-
-
-  </style>
-  <body>
-
-  <script src="//d3js.org/d3.v3.min.js"></script>
-  <script>
-
-  function liveShuffle(end) {
-    // var mix = ["0","1","2","3","4","6","7","8","5","9"],
-        var n = end.length
-        array = d3.range(n),
-        copys = shuffle(end.slice()).reverse();
-
-        var margin = {top: 100, right: 40, bottom: 100, left: 40},
-            width = 400 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
-
-        var y = d3.scale.ordinal()
-          .domain([1, 0])
-          .rangeRoundBands([height, 0], .3);
-
-        var x = d3.scale.ordinal()
-            .domain(d3.range(n))
-            .rangePoints([0, width]);
-
-        var a = d3.scale.linear()
-            .domain([0, n - 1])
-            .range([-45, 45]);
-
-        var svg = d3.select("#liveShuffle").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        var line = svg.append("g")
-            .attr("class", "line")
-          .selectAll("line")
-            .data(array.map(function(v, i) {
-            return {
-              value: v,
-              index: i,
-              array: 0
-            };
-          }))
-          .enter().append("line")
-            .attr("transform", transform)
-            .attr("y2", -y.rangeBand());
-
-          var line0 = line[0],
-              line1 = new Array(n);
-
-          var transition = d3.transition()
-              .duration(1000)
-              .each("start", function start() {
-                var copy = copys.pop(),
-                    i = copy[0], //from
-                    j = copy[1], //to
-                    e = line1[j] = line0[i],
-                    d = e.__data__;
-                    d.index = j;
-                    d.array = (d.array + 1) & 1;
-                    // console.log("Von: i = " +i)
-                    // console.log("Nach: j = "+ j)
-                transition.each(function() { d3.select(e).transition().attr("transform", transform); });
-                if (copys.length) transition = transition.transition().each("start", start);
-              });
-
-
-
-        function transform(d) {
-          return "translate(" + x(d.index) + "," + y(d.array) + ")rotate(" + a(d.value) + ")";
-        }
-
-        function shuffle(mix) {
-          var copys = [],
-              m = mix.length;
-
-          while (m) {
-          p = mix[(m--)-1];
-          // console.log("Von: p = " +p)
-          // console.log("Nach: m = "+ m)
-          copys.push([p, m]);
-          }
-          return copys;
-        }
-  }
-
-
-
-
-  </script>
-  <script>
+  <!-- <script>
+  //exsample
   var end = ["9","0","2","3","4","6","7","8","5","1"]
   liveShuffle(end)
-  </script>
+  </script> -->
 
 </body>
 </html>
