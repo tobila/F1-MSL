@@ -1,5 +1,5 @@
-.helloInput {
-  width: 200px;
+body {
+  position: relative;
 }
 
 .line {
