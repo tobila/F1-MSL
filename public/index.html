@@ -77,7 +77,7 @@
         </div>
 
         <div class="card-body" id="liveShuffle">
-          <h5 class="card-title">Start- vs. Endaufstellung</h5>
+          <h5 class="card-title">Start- vs. End-Position</h5>
         </div>
         <div class="card-body" id="lapSort">
           <h5 class="card-title">Rennverlauf</h5>
@@ -103,10 +103,12 @@
     <script>
 
     function liveShuffle(end) {
-                  console.log(end)
+          // d3.selectAll("#liveShuffle").remove(); //clear plott
+
       // var mix = ["0","1","2","3","4","6","7","8","5","9"],
-          var n = end.length
-          array = d3.range(n),
+          var n = end.length;
+          console.log("liveShuffle(), receiving: [" + end +"], n="+ n)
+          var array = d3.range(n),
           copys = shuffle(end.slice()).reverse();
 
           var margin = {top: 100, right: 40, bottom: 100, left: 40},
@@ -149,7 +151,7 @@
                 line1 = new Array(n);
 
             var transition = d3.transition()
-                .duration(200)
+                .duration(150)
                 .each("start", function start() {
                   var copy = copys.pop(),
                       i = copy[0], //from
@@ -159,7 +161,7 @@
                       d.index = j;
                       d.array = (d.array + 1) & 1;
                       // console.log("start: " +i)
-                      // console.log("Nach: j = "+ j)
+                      // console.log("end: "+ j)
                   transition.each(function() { d3.select(e).transition().attr("transform", transform); });
                   if (copys.length) transition = transition.transition().each("start", start);
                 });
@@ -176,7 +178,7 @@
             p = mix[(m--)-1];
             // console.log("Von: p = " +p)
             // console.log("Nach: m = "+ m)
-            copys.push([p-1, m]);
+            copys.push([p-!(mix.includes("0")), m]); // -!(mix.includes("0") this converts 1 (one) based indexing
             }
             return copys;
           }
@@ -238,7 +240,9 @@
             // HIER FUNKTIOSAUFRUF FISHER-YATESSHUFFLE:
             // Sortiertes Startarray: data.start
             // Vermischtes Endarray: data.end
+            console.log("Clicked at: "+race+" "+year)
             liveShuffle(data.end)
+
 
             detailsHeader.innerHTML = "Details for Race "+race+" "+year;
             window.location.href = "index.html#detailsHeader";
