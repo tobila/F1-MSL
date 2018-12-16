@@ -75,9 +75,10 @@
         <div class="card-header" id="detailsHeader">
           Details for Race Monaco 1979 (Details-on-Demand-View)
         </div>
-
+        <br><br>
+        <h5 class="card-title">Start- vs. End-Position</h5>
         <div class="card-body" id="liveShuffle">
-          <h5 class="card-title">Start- vs. End-Position</h5>
+
         </div>
         <div class="card-body" id="lapSort">
           <h5 class="card-title">Rennverlauf</h5>
@@ -103,17 +104,26 @@
     <script>
 
     function liveShuffle(end) {
+          var n = end.length;
+
+          console.log("liveShuffle(), receiving: [" + end +"], n="+ n)
+          if(end.includes("0")) console.log("zero based")
+          if((Math.max(... end)>n) || (Math.max(... end)==n && end.includes("0"))){
+            console.log("fehlerhafte daten: mindestens 1 platz ist höher als die anzahl der rennteilnehmer")
+          }
+          else if (Math.max(... end)<(n-1)){
+            console.log("fehlerhafte daten: der letzte platz ist geringer als die anzahl der rennteilnehmer")
+          }
+
+          else{
           d3.selectAll("#liveShuffle > *").remove(); //clear plott
 
-      // var mix = ["0","1","2","3","4","6","7","8","5","9"],
-          var n = end.length;
-          console.log("liveShuffle(), receiving: [" + end +"], n="+ n)
           var array = d3.range(n),
           copys = shuffle(end.slice()).reverse();
 
-          var margin = {top: 100, right: 40, bottom: 100, left: 40},
+          var margin = {top: 20, right: 40, bottom: 5, left: 40},
               width = 400 - margin.left - margin.right,
-              height = 400 - margin.top - margin.bottom;
+              height = 200 - margin.top - margin.bottom;
 
           var y = d3.scale.ordinal()
             .domain([1, 0])
@@ -151,17 +161,18 @@
                 line1 = new Array(n);
 
             var transition = d3.transition()
-                .duration(150)
+                .duration(200)
                 .each("start", function start() {
                   var copy = copys.pop(),
                       i = copy[0], //from
-                      j = copy[1], //to
-                      e = line1[j] = line0[i],
+                      j = copy[1]; //to
+                      // console.log("start: " +i)
+                      // console.log("end: "+ j)
+                  var e = line1[j] = line0[i],
                       d = e.__data__;
                       d.index = j;
                       d.array = (d.array + 1) & 1;
-                      // console.log("start: " +i)
-                      // console.log("end: "+ j)
+
                   transition.each(function() { d3.select(e).transition().attr("transform", transform); });
                   if (copys.length) transition = transition.transition().each("start", start);
                 });
@@ -173,15 +184,15 @@
           function shuffle(mix) {
             var copys = [],
                 m = mix.length;
-
             while (m) {
             p = mix[(m--)-1];
             // console.log("Von: p = " +p)
             // console.log("Nach: m = "+ m)
-            copys.push([p-!(mix.includes("0")), m]); // -!(mix.includes("0") this converts 1 (one) based indexing
+            copys.push([p - !(mix.includes("0")), m ]); // -!(mix.includes("0") this converts 1 (one) based indexing
             }
             return copys;
           }
+        }
     }
     </script>
 
@@ -259,17 +270,22 @@
 
 
 
-    <script>
-      $.get('/testData', {}, function(data){
-        console.log(data)
-      });
-    </script>
+    // <script>
+    //   $.get('/testData', {}, function(data){
+    //     console.log(data)
+    //   });
+    // </script>
 
-  <!-- <script>
-  //exsample
+  <!-- // <script>
+  //test
+  zeroBased = [0,1,2,3,4,5,6,7,8,9]
+  oneBased = [1,2,3,4,5,6,7,8,9,10]
+  tooSmall = [0,0,1,2,3,4,5,6,7,8]
+  tooBig = [3,4,5,6,7,8,9,10,11,12]
+  doubleValue = [1,1,3,3,5,6,7,8,9,10]
   var end = ["9","0","2","3","4","6","7","8","5","1"]
-  liveShuffle(end)
-  </script> -->
+  liveShuffle(tooBig)
+  // </script> -->
 
 </body>
 </html>
