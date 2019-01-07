@@ -86,7 +86,7 @@
         </div>
         <div class="card-body" id="linePlott">
           <h5 class="card-title">Lap-Times Linechart</h5>
-          <img src="img/linechart.png">
+          <!-- <img src="img/linechart.png"> -->
         </div>
       </div>
 
@@ -214,6 +214,95 @@
 
     </script>
 
+    <!-- lineChart -->
+    <script>
+  function plotLineChart(data){
+// cosmetic settins
+// for (i in data) {
+//   console.log(data[i])
+//   n = data[i].y.length
+//
+//   var rounds = [];
+//   for (var i = 1; i <= n; i++) {
+//      rounds.push(i);
+//   }
+//   console.log(rounds)
+//   // data[i].x = rounds,
+//   data[i].mode = 'lines',
+//   data[i].line = {
+//   dash: 'solid',
+//   width: 6
+//   }
+// }
+    console.log(data)
+
+    var layout = {
+      autosize: true,
+      // width: 500,
+      height: 500,
+      title: 'Streckenzeiten',
+
+      xaxis: {
+          autorange: true,
+          range: ['2', '4'],
+          rangeselector: {buttons: [
+              {
+                count: 1,
+                label: '1m',
+                step: 'month',
+                stepmode: 'backward'
+              },
+              {
+                count: 6,
+                label: '6m',
+                step: 'month',
+                stepmode: 'backward'
+              },
+              {step: 'all'}
+            ]},
+          rangeslider: {range: ['0', '5']},
+          // type: 'date'
+        },
+      yaxis: {
+        range: [0, 18.5],
+        autorange: false
+      },
+      legend: {
+        y: 0.5,
+        traceorder: 'reversed',
+        font: {
+          size: 16
+        }
+      }
+    };
+
+    Plotly.newPlot('linePlott', data, layout);
+    }
+    //START sample
+    var trace1 = {
+      y: [1, 3, 2, 3, 1],
+      name: 'Solid',
+    };
+
+    var trace2 = {
+      y: [6, 8, 7, 8, 6],
+      name: 'dashdot',
+    };
+
+    var trace3 = {
+      y: [11, 13, 12, 13, 11],
+      name: 'Solid',
+    };
+
+    var trace4 = {
+      y: [16, 18, 17, 18, 16],
+      name: 'dot',
+    };
+    var sampleData = [trace1, trace2, trace3, trace4];
+    plotLineChart(sampleData)
+    // END sample
+    </script>
+
     <script>
       $.get('/fastestLapsHeatmap', {}, function(data){
         var xValues = data.year;
@@ -286,13 +375,6 @@
       });
     </script>
 
-
-
-    // <script>
-    //   $.get('/testData', {}, function(data){
-    //     console.log(data)
-    //   });
-    // </script>
 
   <!-- // <script>
   //test
