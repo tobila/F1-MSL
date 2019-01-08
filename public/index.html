@@ -217,24 +217,42 @@
     <!-- lineChart -->
     <script>
   function plotLineChart(data){
+    colors = [
+'#000000' ,'#000033',	'#000066',	'#000099',	'#0000cc',	'#0000ff',
+'#003300'	,'#003333',	'#003366',	'#003399',	'#0033cc',	'#0033ff',
+'#006600'	,'#006633',	'#006666',	'#006699',	'#0066cc',	'#0066ff',
+'#660000'	,'#660033',	'#660066',	'#660099',	'#6600cc',	'#6600ff',
+'#663300'	,'#663333',	'#663366',	'#663399',	'#6633cc',	'#6633ff',
+'#666600'	,'#666633',	'#666666',	'#666699',	'#6666cc',	'#6666ff',
+'#cc0000'	,'#cc0033',	'#cc0066',	'#cc0099',	'#cc00cc',	'#cc00ff',
+'#cc3300'	,'#cc3333',	'#cc3366',	'#cc3399',	'#cc33cc',	'#cc33ff',
+'#cc6600'	,'#cc6633',	'#cc6666',	'#cc6699',	'#cc66cc',	'#cc66ff'
+]
+var newData =[]
 // cosmetic settins
-// for (i in data) {
-//   console.log(data[i])
-//   n = data[i].y.length
-//
-//   var rounds = [];
-//   for (var i = 1; i <= n; i++) {
-//      rounds.push(i);
-//   }
-//   console.log(rounds)
-//   // data[i].x = rounds,
-//   data[i].mode = 'lines',
-//   data[i].line = {
-//   dash: 'solid',
-//   width: 6
-//   }
-// }
-    console.log(data)
+for (i in data) {
+    var d= data[i],
+    c= colors[i],
+    rounds = [];
+    n = d.y.length
+    for (var i = 1; i <= n; i++) {
+       rounds.push(i);
+    }
+    var trace = {
+    type: "scatter",
+    mode: "lines",
+    name: d.name,
+    y: d.y,
+    x: rounds,
+    line: {
+      color: c,
+      dash: 'dashdot',
+      width: 4
+    }
+    }
+  newData.push(trace)
+}
+    console.log(newData)
 
     var layout = {
       autosize: true,
@@ -276,17 +294,17 @@
       }
     };
 
-    Plotly.newPlot('linePlott', data, layout);
+    Plotly.newPlot('linePlott', newData, layout);
     }
     //START sample
     var trace1 = {
       y: [1, 3, 2, 3, 1],
-      name: 'Solid',
+      name: "Solid",
     };
 
     var trace2 = {
       y: [6, 8, 7, 8, 6],
-      name: 'dashdot',
+      name: "dashdot",
     };
 
     var trace3 = {
