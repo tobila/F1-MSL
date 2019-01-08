@@ -4,6 +4,8 @@ var ErgastClient = require('ergast-client'),
     ergast = new ErgastClient();
 var Request = require("request");
 var async = require("async");
+const fs = require('fs');
+// const csv = require('fast-csv');
 
 var port = process.env.PORT || 8080;
 
@@ -18,17 +20,6 @@ app.listen(port);
 console.log("Listening on port ", port);
 
 
-// Example sending data to html
-app.get('/testData', function(req, res){
-  var yValues = ['W', 'X', 'Y', 'Z'];
-  res.send(yValues);
-});
-
-
-
-ergast.getRaceResults(2004, 1, function(err, raceResults) {
-  if (!err) console.log(timestampToMillis(raceResults.driverResults[0].fastestLap.time.time))
-});
 
 function timestampToMillis(timeStamp){
   var split1 = timeStamp.split(":")
@@ -112,15 +103,10 @@ var qFisherYates = async.queue(function(task, callback) {
   callback();
 }, 5);
 
-//callback
-// qFisherYates.drain = function() {
-//     console.log('all items have been processed');
-//     console.log(raceResults);
-// };
 
 for (var i = 0; i < 15; i++) {
   var year = 2004+i;
-  yearArray.push("|"+year+"|");
+  // yearArray.push("|"+year+"|");
   var requestURL = "http://ergast.com/api/f1/"+year+"/results.json?limit=1000";
   qFisherYates.push({ url: requestURL, year:year }, function(err) {
     // console.log('finished processing #'+i);
@@ -136,33 +122,124 @@ app.get('/getDetailsViewData', function(req, res){
   var requestedRaceCountry = tmp[1];
   var requestedRaceLocality = tmp[0];
   var results = raceResults[requestedYear]
+  var laptimes;
 
+  // FISHER YATES
   for(var i=0; i < results.length; i++){
     var circuitInfos = results[i].Circuit.Location;
     var resultInfos = results[i].Results;
+    var raceRound;
 
     if(circuitInfos.locality == requestedRaceLocality && circuitInfos.country == requestedRaceCountry){
       for(var k=0; k < resultInfos.length; k++){
         yatesShuffleStart.push(resultInfos[k].position);
         yatesShuffleEnd.push(resultInfos[k].grid);
+
+        raceRound = results[i].round; // Prüfen, welche "round" des Jahres angeklickt wurde
+        laptimes = getLaptimesOfRace(requestedYear, raceRound);
       }
     }
   }
 
-  res.send({start:yatesShuffleStart, end:yatesShuffleEnd});
+  res.send({start:yatesShuffleStart, end:yatesShuffleEnd, laptimes:laptimes});
   // res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
 });
 //END FISHER YATES SHUFFLE (RaceResult & QualResult)
 
 
-// Example API-Request
-// Request.get("http://ergast.com/api/f1/2011/5/laps.json?limit=0", (error, response, body) => {
-//     if(error) {
-//         return console.log(error);
-//     }
-//     var jsonObj = JSON.parse(body)
-//     console.log(jsonObj.MRData)
-// });
+
+// LAPTIMES DETAILS
+// var jsonFile = fs.createReadStream("f1db_csv/laptimes/2004_1.json");
+function getLaptimesOfRace(year, round){
+  var path = "f1db_csv/laptimes/"+year+"_"+round+".json"
+  var jsonFile = fs.readFileSync(path);
+  jsonFile = JSON.parse(jsonFile);
+
+  var tracesArray = [];
+  //sonderfall i=0; nicht mit vorgänger vergleichbar:
+  var trace = {};
+  trace.y = [];
+  trace.y.push(jsonFile[0].milliseconds);
+  var name = jsonFile[0].forename + " " + jsonFile[0].surname;
+  trace.name = name;
+
+  for(i=1; i<jsonFile.length; i++){
+    var nameOld = jsonFile[i-1].forename + " " + jsonFile[i-1].surname;
+    var nameAct = jsonFile[i].forename + " " + jsonFile[i].surname;
+    if(nameOld == nameAct){
+      trace.y.push(jsonFile[i].milliseconds);
+    }else{
+      tracesArray.push(trace);
+      trace = {}; // leeren
+      trace.y = []; // leeren
+      trace.y.push(jsonFile[i].milliseconds);
+      trace.name = nameAct;
+    }
+  }
+  tracesArray.push(trace);
+  return tracesArray;
+}
+
+// console.log(getLaptimesOfRace(2004,1));
 
 
-// require("cf-deployment-tracker-client").track();
+
+
+
+// var stream = fs.createReadStream("f1db_csv/races.csv");
+//
+// var csvStream = csv
+//     .parse()
+//     // .fromStream(stream, {headers : ["raceId","year","round","circuitId","name","date","time","url"]})
+//     // .fromStream(stream, {headers : true})
+//     // .validate(function(data){
+//     //   return data[1] <= 2004; //all persons must be under the age of 50
+//     // })
+//     .on("data", function(data){
+//          // console.log(data);
+//          split = data[0].split(',')
+//          console.log(split[1])
+//     })
+//     .on("end", function(){
+//          console.log("done");
+//     });
+//
+// stream.pipe(csvStream);
+
+
+
+// LAPTIMES
+// var raceResults = {};
+// var lapTimes = [];
+// var qLapTimes = async.queue(function(task, callback) {
+//   Request.get(task.url, (error, response, body) => {
+//       if(error) {
+//           return console.log(error);
+//       }
+//       var jsonObj = JSON.parse(body);
+//       console.log(jsonObj);
+//       var laps = jsonObj.MRData.RaceTable.Races[0].Laps;
+//
+//       for(i=0; i<laps.length; i++){
+//         lapTimes.push(laps.Timings[0].time);
+//       }
+//       console.log("Laptimes: "+lapTimes);
+//       // raceResults[task.year] = races;
+//       // {
+//       //   year:task.year
+//       //   task.year:races
+//       // };
+//
+//   });
+//   callback();
+// }, 5);
+//
+//
+// for (var i = 0; i < 15; i++) {
+//   var year = 2004;
+//   // yearArray.push("|"+year+"|");
+//   var requestURL = "http://ergast.com/api/f1/"+year+"/5/laps/1.json";
+//   qLapTimes.push({ url: requestURL, year:year }, function(err) {
+//     // console.log('finished processing #'+i);
+//   });
+// }
