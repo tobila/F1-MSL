@@ -278,11 +278,14 @@ for (i in data) {
               },
               {step: 'all'}
             ]},
-          rangeslider: {range: ['0', '5']},
+          rangeslider: {range: ['1', '5']},
+          title: {text:'Lap count'}
+
           // type: 'date'
         },
       yaxis: {
-        // range: [0, 18.5],
+        title:  {text:'Laptime [ms]'},
+        type: 'log',
         autorange: true
       },
       legend: {
@@ -384,7 +387,7 @@ for (i in data) {
               window.location.href = "index.html#detailsHeader";
               liveShuffle(endPos)
               plotLineChart(lapT)
-              console.log(lapT)
+              // console.log(lapT)
             }
             else console.log("no data")
 
