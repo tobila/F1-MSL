@@ -7,3 +7,21 @@ body {
   stroke-width: 1.5px;
   stroke-linecap: round;
 }
+
+
+lapSort {
+  background: #000;
+}
+
+.lineRound {
+  fill: none;
+  stroke: #000;
+  stroke-width: 6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-halo {
+  stroke-linecap: butt;
+  stroke-width: 8px;
+}
