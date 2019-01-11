@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formula 1 Visualizations</title>
+
+    <!-- Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+  <nav class="navbar navbar-dark navbar-expand-lg navbar-light bg-dark">
+    <span class="navbar-brand" >Formula 1 Visualizations</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Startseite <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="wm.html">Weltmeister <span class="sr-only">(current)</span></a>
+        </li>
+
+      </ul>
+
+    </div>
+  </nav>
+
+    <br><br>
+
+
+    <div class="container">
+
+      <div class="card text-center">
+        <div class="card-header">
+          Formel 1 Weltmeister seit 1985
+        </div>
+        <div id="chartDiv">
+          <canvas id="myChart" width="400" height="400"></canvas>
+          <!-- <img src="img/3d-linechart.png"> -->
+        </div>
+        <div class="card-footer">
+          Sortieren nach &nbsp;<br>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+              <input id="cbxFahrer" type="radio" name="options" id="option2" autocomplete="off" checked> Fahrer
+            </label>
+            <label class="btn btn-secondary">
+              <input id="cbxHersteller" type="radio" name="options" id="option3" autocomplete="off"> Hersteller
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+
+      <br><br>
+
+
+
+    </div>
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
+
+    <!-- <script src="//d3js.org/d3.v3.min.js"></script> -->
+<script>
+var ctx = document.getElementById("myChart");//.getContext('2d');
+ctx.height = 300;
+
+
+
+
+var dataFahrer = {
+    datasets: [
+      {
+        data: [5,1,4,1,1,2,7,2,1,1,4,1,3,1],
+        label: 'Data 1',
+        labels: ["Lewis Hamilton", "Nico Rosberg", "Sebastian Vettel", "Jenson Button", "Kimi Räikkönen","Fernando Alonso","Michael Schumacher","Mika Häkkinen","Jacques Villeneuve","Damon Hill","Alain Prost","Nigel Mansell","Ayrton Senna","Nelson Piquet"],
+        backgroundColor: ['#b3cef9',  '#f9deb3',      '#c1f9b3',            '#dcb3f9',        '#b3d7f9',      "#c0ede1",          '#edc0c0',        '#edd5c0',        '#d5d9ed',      '#feffea',    '#a2ebb1',    '#d8f1fd',      '#c2d0e5',      '#f2c9de']
+      },
+      {
+        data:[1,4,1,4,1,1,2,5,2,2,1,1,1,3,1,3,1],
+        label: 'Data 2',
+        labels: ["McLaren", "Mercedes", "Mercedes", "Red Bull", "Brawn","Ferrari","Renault","Ferrari","Benetton","McLaren","Williams","Williams","Williams","McLaren","Williams","McLaren","Williams"],
+        backgroundColor: ['#727272','#8befde','#8befde','#282fff','#e5e5e5','#ff0400','#ffff00','#ff0400','#1e9945','#727272','#0c417a','#0c417a','#0c417a','#727272',"#0c417a",'#727272','#0c417a']
+      }
+    ],
+    labels: ["Lewis Hamilton", "Nico Rosberg", "Sebastian Vettel", "Jenson Button", "Kimi Räikkönen","Fernando Alonso","Michael Schumacher","Mika Häkkinen","Jacques Villeneuve","Damon Hill","Alain Prost","Nigel Mansell","Ayrton Senna","Nelson Piquet"]
+};
+
+
+var dataHersteller = {
+    datasets: [
+      {
+        data: [5,4,1,9,6,2,5,2],
+        label: 'Data 1',
+        labels: ["Mercedes","Red Bull","Brawn","McLaren","Ferrari","Renault","Williams","Benetton"],
+        backgroundColor: ['#8befde','#282fff','#e5e5e5','#727272','#ff0400','#ffff00','#0c417a','#1e9945']
+      },
+      {
+        data:[2,1,2,4,1,1,2,3,3,1,5,2,1,1,1,1,1,2],
+        label: 'Data 2',
+        labels: ["Lewis Hamilton","Nico Rosberg","Lewis Hamilton","Sebastian Vettel","Jenson Button","Lewis Hamilton","Mika Häkkinnen","Ayrton Senna","Alain Prost","Kimi Räikkönen","Michael Schumacher","Fernando Alonso","Jacques Villeneuve","Damon Hill","Alain Prost","Nigel Mansell","Nelson Piquet","Michael Schumacher"],
+        backgroundColor: ['#b3cef9','#f9deb3',        '#b3cef9',      '#c1f9b3',        '#dcb3f9',          '#b3cef9',    '#edd5c0',          '#c2d0e5',    '#a2ebb1',    '#b3d7f9',      '#edc0c0',            "#c0ede1",        '#d5d9ed',        '#feffea',    '#a2ebb1',  '#d8f1fd',        '#f2c9de',      '#edc0c0',]
+      }
+    ],
+    labels: ["Mercedes","Red Bull","Brawn","McLaren","Ferrari","Renault","Williams","Benetton"]
+};
+
+
+var options = {
+    tooltips: {
+        callbacks: {
+            label: function (item, data) {
+                var label = data.datasets[item.datasetIndex].labels[item.index];
+                var value = data.datasets[item.datasetIndex].data[item.index];
+                return label + ': ' + value;
+            }
+        }
+    }
+};
+
+var myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: dataFahrer,
+    options: options
+});
+
+
+
+$("#cbxFahrer").on('change', function(){
+  myDoughnutChart.destroy();
+  myDoughnutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: dataFahrer,
+      options: options
+  });
+});
+
+$("#cbxHersteller").on('change', function(){
+  myDoughnutChart.destroy();
+  myDoughnutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: dataHersteller,
+      options: options
+  });
+})
+</script>
+
+
+</body>
+</html>
