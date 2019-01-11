@@ -123,6 +123,7 @@ app.get('/getDetailsViewData', function(req, res){
   var requestedRaceLocality = tmp[0];
   var results = raceResults[requestedYear]
   var laptimes;
+  var places;
 
   // FISHER YATES
   for(var i=0; i < results.length; i++){
@@ -137,11 +138,12 @@ app.get('/getDetailsViewData', function(req, res){
 
         raceRound = results[i].round; // Prüfen, welche "round" des Jahres angeklickt wurde
         laptimes = getLaptimesOfRace(requestedYear, raceRound);
+        places = getPlacesOfRace(requestedYear, raceRound);
       }
     }
   }
 
-  res.send({start:yatesShuffleStart, end:yatesShuffleEnd, laptimes:laptimes});
+  res.send({start:yatesShuffleStart, end:yatesShuffleEnd, laptimes:laptimes, places:places});
   // res.send({raceNames:raceNames, fastestLaps:fastestLaps, year:yearArray});
 });
 //END FISHER YATES SHUFFLE (RaceResult & QualResult)
@@ -178,6 +180,17 @@ function getLaptimesOfRace(year, round){
   }
   tracesArray.push(trace);
   return tracesArray;
+}
+
+
+
+// Platzierung DETAILS
+function getPlacesOfRace(year, round){
+  var path = "f1db_csv/platzierung/"+year+"_"+round+".json"
+  var jsonFile = fs.readFileSync(path);
+  jsonFile = JSON.parse(jsonFile);
+
+  return jsonFile;
 }
 
 // console.log(getLaptimesOfRace(2004,1));
