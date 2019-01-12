@@ -125,7 +125,7 @@
 
         // arrays = mergesort(array.slice()),
         elements = d3.range(n).map(function(i) { return {value: i, indexes: []}; });
-        console.log(arrays)
+        // console.log(arrays)
 
     var color = d3.scale.cubehelix()
         .domain([0, n / 2, n - 1])
@@ -362,7 +362,7 @@ for (i in data) {
     }
   newData.push(trace)
 }
-    console.log(newData)
+    // console.log(newData)
 
     var layout = {
       autosize: true,
@@ -483,28 +483,21 @@ for (i in data) {
             // Sortiertes Startarray: data.start
             // Vermischtes Endarray: data.end
             console.log("Clicked at: "+race+" "+year)
+
             var endPos = data.end;
             var lapT = data.laptimes;
+
+            var requestedYear = year.substring(1, 5);
+            if(requestedYear<=2011){
+              var places = data.places;
+              lapSort(places)
+            }
             if (endPos!=undefined && endPos.length > 0){
               detailsHeader.innerHTML = "Details for Race "+race+" "+year;
               window.location.href = "index.html#detailsHeader";
               liveShuffle(endPos)
               plotLineChart(lapT)
-              var jsonFile = (function() {
-              var json = null;
-              $.ajax({
-                  'async': false,
-                  'global': false,
-                  'url': "2011_1.json",
-                  'dataType': "json",
-                  'success': function (data) {
-                      json = data;
-                  }
-              });
-              return json;
-          })();
 
-              lapSort(jsonFile)
               // console.log(lapT)
             }
             else console.log("no data")
