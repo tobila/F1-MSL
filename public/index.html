@@ -353,11 +353,18 @@
     }
     else{
 
-      console.log(data, places)
-
-      function getEndPlace(name)
+      function getEndPlaceOf(name)
       {
+        var place;
+        places.laps.forEach(function(lap) {
+          if(lap.name == name){
+            var placing = lap.placing;
+            place = placing[placing.length-1];
+            // break;
+          }
 
+        });
+        return place;
       }
 
 
@@ -382,22 +389,24 @@
       // cosmetic settins
       for (i in data) {
           var d= data[i],
-          c= color(i),
-          rounds = [];
-          n = d.y.length
+          name = d.name,
+          place = getEndPlaceOf(d.name),
+          c= color(place),
+          rounds = [],
+          n = d.y.length;
           for (var i = 1; i <= n; i++) {
              rounds.push(i);
           }
           var trace = {
             type: "scatter",
             mode: "lines",
-            name: d.name,
+            name: name,
             y: d.y,
             x: rounds,
             line: {
               color: c,
               dash: 'solid',
-              width: 2
+              width: 3
           }
           }
         newData.push(trace)
