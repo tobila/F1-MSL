@@ -138,7 +138,9 @@ app.get('/getDetailsViewData', function(req, res){
 
         raceRound = results[i].round; // Prüfen, welche "round" des Jahres angeklickt wurde
         laptimes = getLaptimesOfRace(requestedYear, raceRound);
-        places = getPlacesOfRace(requestedYear, raceRound);
+        if(requestedYear>=2011){
+          places = getPlacesOfRace(requestedYear, raceRound);
+        }
       }
     }
   }
