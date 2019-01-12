@@ -356,16 +356,16 @@
       function getEndPlaceOf(name)
       {
         var place;
-        places.laps.forEach(function(lap) {
+        for (i = 0; i < places.laps.length; i++) {
+          var lap = places.laps[i];
           if(lap.name == name){
             var placing = lap.placing;
             place = placing[placing.length-1];
-            // break;
-          }
-
-        });
-        return place;
+            break;
+            }
       }
+      return place;
+    }
 
 
         var n = data.length;
