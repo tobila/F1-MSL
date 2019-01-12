@@ -123,13 +123,13 @@
     }
     else{
     d3.selectAll("#lapSort > *").remove(); //clear plott
-    var n = jsonInput.lapCount,
+    // var n = jsonInput.lapCount,
         // array = d3.shuffle(d3.range(n)),
-
-        arrays = lapOrdersJsonToArrays(jsonInput),
-
+        var arrays = lapOrdersJsonToArrays(jsonInput);
+        var n = arrays[0].length;
+        console.log("array length"+n)
         // arrays = mergesort(array.slice()),
-        elements = d3.range(n).map(function(i) { return {value: i, indexes: []}; });
+        var elements = d3.range(n).map(function(i) { return {value: i, indexes: []}; });
         // console.log(arrays)
 
     var color = d3.scale.cubehelix()
@@ -148,9 +148,9 @@
       });
     });
 
-    var margin = {top: 40, right: 40, bottom: 5, left: 40},
-            width = 960 - margin.left - margin.right,
-            height = 700 - margin.top - margin.bottom;
+    var margin = {top: 40, right: 40, bottom: 50, left: 40},
+        width = 600 - margin.left - margin.right,
+        height = 800 - margin.top - margin.bottom;
 
 
     var x = d3.scale.ordinal()
@@ -182,6 +182,20 @@
       .select(function() { return this.parentNode.insertBefore(this.cloneNode(false), this); })
         .attr("class", "line-halo")
         .style("stroke", null);
+    svg.append("text")
+        .attr("x", (0))
+        .attr("y", (height+20))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        // .style("text-decoration", "underline")
+        .text("1st");
+    svg.append("text")
+        .attr("x", (width))
+        .attr("y", (height+20))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        // .style("text-decoration", "underline")
+        .text("last");
 
     function interpolateLine(points) {
       var p0 = points[0],
@@ -243,9 +257,9 @@
           var array = d3.range(n),
           copys = shuffle(end.slice()).reverse();
 
-          var margin = {top: 40, right: 40, bottom: 5, left: 40},
+          var margin = {top: 35, right: 40, bottom: 70, left: 40},
               width = 400 - margin.left - margin.right,
-              height = 200 - margin.top - margin.bottom;
+              height = 275 - margin.top - margin.bottom;
 
           var y = d3.scale.ordinal()
             .domain([1, 0])
