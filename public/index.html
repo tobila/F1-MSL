@@ -155,7 +155,7 @@
     document.getElementById("lapSort").innerHTML = "";
     if(jsonInput==undefined){
         document.getElementById("lapSort").innerHTML = "No data available";
-      console.log('lapSort no data')
+      console.log(' no data')
     }
     else{
     d3.selectAll("#lapSort > *").remove(); //clear plott
@@ -163,6 +163,8 @@
         // array = d3.shuffle(d3.range(n)),
         var arrays = lapOrdersJsonToArrays(jsonInput);
         var n = arrays[0].length;
+        var roundN = arrays.length;
+        console.log(roundN+" Runden")
         // arrays = mergesort(array.slice()),
         var elements = d3.range(n).map(function(i) { return {value: i, indexes: []}; });
         // console.log(arrays)
@@ -231,6 +233,21 @@
         .style("font-size", "16px")
         // .style("text-decoration", "underline")
         .text("last");
+    svg.append("text")
+      .attr("x", (-15))
+      .attr("y", (-8))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Round");
+    for (var i = 1; i < roundN; ++i) {
+      svg.append("text")
+        .attr("x", (-20))
+        .attr("y", (i*((height+10)/roundN)+1))
+        .attr("text-anchor", "middle")
+        .style("font-size", "10px")
+        .text(i);
+    }
+
 
     function interpolateLine(points) {
       var p0 = points[0],
