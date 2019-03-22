@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Formel 1 - Visualisierungen</title>
+    <title>Formula 1 - Visualization</title>
 
     <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -16,7 +16,7 @@
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
   <nav class="navbar navbar-dark navbar-expand-lg navbar-light bg-dark">
-    <span class="navbar-brand" >Formel 1 - Visualisierungen</span>
+    <span class="navbar-brand" >Formula 1 - Visualization</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -24,10 +24,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">Startseite <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="index.html">Start page <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="wm.html">Weltmeister</a>
+          <a class="nav-link" href="wm.html">World Champions</a>
         </li>
 
       </ul>
@@ -42,14 +42,13 @@
 
       <div class="card text-center">
         <div class="card-header">
-          Rundenzeiten
+          Lap times
         </div>
         <div class="container-fluid">
           <p class="alert alert-success" style="margin-left:2%; margin-right:2%; margin-top:10px">
-          Die Heatmap zeigt einen Überblick aller Strecken, auf denen seit 2004 gefahren wurde.<br>
-          Die Farbwerte geben die jeweils schnellste Rundenzeit in Millisekunden an, die während dem Rennen zur entsprechenden Strecke und Jahr gefahren wurde.
-          Als Richtwert gilt: 100.000 Millisekunden sind 1 Minute und 40 Sekunden.
-          Weitere Details zu einem Rennen lassen sich durch einen Klick auf einen Datenpunkt der Heatmap anzeigen.</p>
+          The heatmap shows an overview of all tracks that have been driven since 2004.<br>
+          The color values indicate the fastest lap time in milliseconds that was driven to the corresponding track and year during the race. <br>
+          As a guideline: 100,000 milliseconds are 1 minute and 40 seconds. Further details about a race can be viewed by clicking on a datapoint of the heatmap.</p>
           <hr>
         </div>
         <div id="mainView">
@@ -96,47 +95,43 @@
 
       <br><br>
 
-      <div class="card text-center" style="height: 2600px;">
+      <div class="card text-center detailsWrapper" style="height: 2600px;">
         <div class="card-header" id="detailsHeader">
-          Wählen Sie ein Datenunkt in der Heatmap um Detailinformationen anzuzeigen
+          Select a data point in the heatmap to show detailed information
         </div>
         <p class="alert alert-success" style="margin-left:2%; margin-right:2%; margin-top:10px">
-          Die folgende Visualisierung zeigt die Überlappung zwischen der Startaufstellung und der Endposition.<br>
-          Jeder Fahrer wird als Strich dargestellt und besitzt einen eindeutigen Neigungswinkel.
-          Während die Striche in der Startaufstellung keine überlappungen besitzen, zeigt die Endposition
-          anhand der Neigungen, welche Wechsel es während dem Rennen gab.
+          The following visualization shows the overlap between the grid and the final position.<br>
+          Each driver is shown as a dash and has a unique angle of inclination. While the strokes on the grid do not have any overlaps, the final position uses the inclinations to show which changes occurred during the race.
         </p>
         <br><br>
-        <h5 class="card-title">Endposition</h5>
+        <h5 class="card-title">End position</h5>
         <div>
           <button id="reloadShuffle" type="button" class="btn btn-info" aria-label="Left Align">
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Erneut abspielen
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Repeat visualization
           </button>
 
           <!-- <button class="btn btn-primary" >Hallo</button> -->
         </div>
         <div class="card-body" id="liveShuffle">
-          <b>Wählen Sie ein Datenunkt in der Heatmap um Detailinformationen anzuzeigen</b>
+          <b>Select a data point in the heatmap to show detailed information</b>
         </div>
         <hr>
         <p class="alert alert-success" style="margin-left:2%; margin-right:2%">
-          Die Visualisierung des Rennverlaufs zeigt alle Positionswechsel während des Rennens an.<br>
-          Der Farbverauf beginnt bei Dunkelgrün (Rennsieger) und interpoliert bis Dunkelrot (Letzter des Rennens).
-          Die Farben sind mit dem Rundenzeiten Linechart abgestimmt. Dort existiert auch eine Legende, welche Farbe welchem Fahrer zugerodnet wird.
+          The visualization of the race shows all changes of position during the race.<br>
+          The color scheme begins at dark green (race winner) and interpolated to dark red (last of the race). The colors are matched with the lap times linechart. There is also a legend, which color is associated to a driver.
         </p>
-        <h5 class="card-title">Rennverlauf</h5>
+        <h5 class="card-title">Race-progress</h5>
         <div class="card-body" id="lapSort">
-          <b>Wählen Sie ein Datenunkt in der Heatmap um Detailinformationen anzuzeigen</b>
+          <b>Select a data point in the heatmap to show detailed information</b>
         </div>
         <hr>
         <p class="alert alert-success" style="margin-left:2%; margin-right:2%">
-          Der Rundenzeiten Linechart zeigt alle Rundenzeiten aller Fahrer eines Rennens.<br>
-          Durch Doppelklick auf einen Fahrer in der Legende kann dessen Lineplot einzeln angezeigt werden.
-          Ausblenden von einzelnen Fahrern kann durch einfaches Klicken auf den Namen gemacht werden.
+          The lap times line chart shows all lap times of all drivers in a race.<br>
+          By double-clicking on a driver in the legend, his lineplot can be displayed individually. Hiding individual drivers can be done by simply clicking on the name.
         </p>
-        <h5 class="card-title">Rundenzeiten Linechart</h5>
+        <h5 class="card-title">Lap times Linechart</h5>
         <div class="card-body" id="linePlott">
-          <b>Wählen Sie ein Datenunkt in der Heatmap um Detailinformationen anzuzeigen</b>
+          <b>Select a data point in the heatmap to show detailed information</b>
         </div>
       </div>
     </div>
@@ -159,7 +154,7 @@
   function lapSort(jsonInput) {
     document.getElementById("lapSort").innerHTML = "";
     if(jsonInput==undefined){
-        document.getElementById("lapSort").innerHTML = "Keine Daten vorhanden";
+        document.getElementById("lapSort").innerHTML = "No data available";
       console.log('lapSort no data')
     }
     else{
@@ -276,7 +271,7 @@
     function liveShuffle(end) {
       document.getElementById("liveShuffle").innerHTML = "";
       if(end==undefined){
-        document.getElementById("liveShuffle").innerHTML = "Keine Daten vorhanden";
+        document.getElementById("liveShuffle").innerHTML = "No data available";
         console.log('liveShuffle no data')
       }
       else{
@@ -287,11 +282,11 @@
 
           if((Math.max(... end)>n) || (Math.max(... end)==n && end.includes("0"))){
             console.log("fehlerhafte daten: mindestens 1 platz ist höher als die anzahl der rennteilnehmer")
-            document.getElementById("liveShuffle").innerHTML = "Keine Daten vorhanden";
+            document.getElementById("liveShuffle").innerHTML = "No data available";
           }
           else if (Math.max(... end)<(n-1)){
             console.log("fehlerhafte daten: der letzte platz ist geringer als die anzahl der rennteilnehmer")
-            document.getElementById("liveShuffle").innerHTML = "Keine Daten vorhanden";
+            document.getElementById("liveShuffle").innerHTML = "No data available";
           }
           else{
           var array = d3.range(n),
@@ -389,7 +384,7 @@
   function plotLineChart(data, places){
     document.getElementById("linePlott").innerHTML = "";
     if(data==undefined){
-      document.getElementById("linePlott").innerHTML = "Keine Daten vorhanden";
+      document.getElementById("linePlott").innerHTML = "No data available";
       console.log('linePlot no data')
     }
     else{
@@ -531,7 +526,7 @@
           showscale: true
         }];
         var layout = {
-          title: 'Schnellste Rundenzeiten in Millisekunden',
+          title: 'Fastest Lap times in milliseconds',
           autosize: true,
           // width: 500,
           height: 1000,
@@ -558,7 +553,7 @@
             // Vermischtes Endarray: data.end
             console.log("Clicked at: "+race+" "+year)
 
-            detailsHeader.innerHTML = "Details für das Rennen "+race+" "+year;
+            detailsHeader.innerHTML = "Race details: "+race+" "+year;
             window.location.href = "#detailsHeader";
             var endPos = data.end;
             var lapT = data.laptimes;

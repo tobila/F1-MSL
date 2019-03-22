@@ -188,10 +188,14 @@ function getLaptimesOfRace(year, round){
 
 // Platzierung DETAILS
 function getPlacesOfRace(year, round){
-  var path = "f1db_csv/platzierung/"+year+"_"+round+".json"
-  var jsonFile = fs.readFileSync(path);
-  jsonFile = JSON.parse(jsonFile);
-
+  var jsonFile = [];
+  try{
+    var path = "f1db_csv/platzierung/"+year+"_"+round+".json"
+    jsonFile = fs.readFileSync(path);
+    jsonFile = JSON.parse(jsonFile);
+  }catch(e){
+    console.log(e);
+  }
   return jsonFile;
 }
 

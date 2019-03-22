@@ -2,7 +2,7 @@ body {
   position: relative;
 }
 
-.line {
+.detailsWrapper * .line {
   stroke: #000;
   stroke-width: 1.5px;
   stroke-linecap: round;
@@ -24,4 +24,13 @@ lapSort {
 .line-halo {
   stroke-linecap: butt;
   stroke-width: 8px;
+}
+
+.translate-flag {
+  opacity: 0.3;
+}
+
+.translate-flag-active,
+.translate-flag:hover {
+  opacity: 1;
 }
