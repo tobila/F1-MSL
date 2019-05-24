@@ -161,13 +161,13 @@
     d3.selectAll("#lapSort > *").remove(); //clear plott
     console.log(jsonInput)
 
-    // var n = jsonInput.lapCount,
-        // array = d3.shuffle(d3.range(n)),
         var arrays = lapOrdersJsonToArrays(jsonInput);
-        var n = arrays[0].length;
+        // var n = arrays[0].length;
+        var n = jsonInput.laps.length + 1
+
         var roundN = arrays.length;
         console.log(roundN+" Runden")
-        // arrays = mergesort(array.slice()),
+
         var elements = d3.range(n).map(function(i) { return {value: i, indexes: []}; });
         // console.log(arrays)
 
@@ -241,7 +241,7 @@
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         // .style("text-decoration", "underline")
-        .text(n+" drivers participated");
+        .text((n-1)+" drivers participated");
     svg.append("text")
       .attr("x", (-15))
       .attr("y", (-8))
