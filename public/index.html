@@ -159,6 +159,8 @@
     }
     else{
     d3.selectAll("#lapSort > *").remove(); //clear plott
+    console.log(jsonInput)
+
     // var n = jsonInput.lapCount,
         // array = d3.shuffle(d3.range(n)),
         var arrays = lapOrdersJsonToArrays(jsonInput);
@@ -281,7 +283,7 @@
         jsonInput.laps.forEach(function(lap) {
         round.push(lap.placing[i])
         });
-        // console.log(round)
+        console.log(round)
         rounds.push(round)
       }
       return rounds
@@ -300,7 +302,7 @@
       }
       else{
           var n = end.length;
-          console.log("liveShuffle(), receiving: [" + end +"], n="+ n)
+          // console.log("liveShuffle(), receiving: [" + end +"], n="+ n)
           d3.selectAll("#liveShuffle > *").remove(); //clear plott
           if(end.includes("0")) console.log("zero based")
 
@@ -583,6 +585,7 @@
             var lapT = data.laptimes;
             var places = data.places;
             globalLiveShuffle = data.end;
+
 
             lapSort(places)
             liveShuffle(endPos)
