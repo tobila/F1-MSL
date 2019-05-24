@@ -280,8 +280,12 @@
       n = jsonInput.lapCount;
       for (i = 0; i < n+1; i++) {
         var round = []
-        jsonInput.laps.forEach(function(lap) {
-        round.push(lap.placing[i])
+        var rank = 0
+        jsonInput.laps.forEach(function(driver) {
+          rank +=1
+          round[driver.placing[i]] = rank
+        // console.log(rank)
+        round.push()
         });
         console.log(round)
         rounds.push(round)
