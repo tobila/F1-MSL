@@ -249,12 +249,14 @@
       .style("font-size", "16px")
       .text("Round");
     for (var i = 1; i < roundN; ++i) {
-      svg.append("text")
-        .attr("x", (-20))
-        .attr("y", (i*((height+10)/roundN)+1))
-        .attr("text-anchor", "middle")
-        .style("font-size", "10px")
-        .text(i);
+      if (i % 5 == 0){    // nur jeder 5. runde wird angezeigt. 
+        svg.append("text")
+          .attr("x", (-20))
+          .attr("y", (i*((height+10)/roundN)+1))
+          .attr("text-anchor", "middle")
+          .style("font-size", "10px")
+          .text(i);
+        }
     }
 
 
