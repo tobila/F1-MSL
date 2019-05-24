@@ -287,7 +287,7 @@
         // console.log(rank)
         round.push()
         });
-        console.log(round)
+        // console.log(round)
         rounds.push(round)
       }
       return rounds
@@ -419,18 +419,17 @@
     }
     else{
 
-      function getEndPlaceOf(name)
+      function getEndPlaceOf(name) //finden der Endposition
       {
         var place;
         for (i = 0; i < places.laps.length; i++) {
-          var lap = places.laps[i];
-          if(lap.name == name){
-            var placing = lap.placing;
-            place = placing[placing.length-1];
-            break;
+          var driver = places.laps[i];
+          if(driver.name == name){
+              // console.log(name+", Endposition: "+i)
+              return i;
             }
       }
-      return place;
+
     }
 
 
@@ -464,7 +463,7 @@
             c= colors[i]
           }else{
             var place = getEndPlaceOf(d.name);
-            c= color(place);
+            c= color(place); //farbe aus platzierung auslesen
           }
 
           for (var i = 1; i <= n; i++) {
