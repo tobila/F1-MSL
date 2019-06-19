@@ -155,7 +155,7 @@
     document.getElementById("lapSort").innerHTML = "";
     if(jsonInput==undefined){
         document.getElementById("lapSort").innerHTML = "No data available";
-      console.log(' no data')
+      console.log('lapSort, no data')
     }
     else{
     d3.selectAll("#lapSort > *").remove(); //clear plott
@@ -249,7 +249,7 @@
       .style("font-size", "16px")
       .text("Round");
     for (var i = 1; i < roundN; ++i) {
-      if (i % 5 == 0){    // nur jeder 5. runde wird angezeigt. 
+      if (i % 5 == 0){    // nur jeder 5. runde wird angezeigt.
         svg.append("text")
           .attr("x", (-20))
           .attr("y", (i*((height+10)/roundN)+1))
@@ -304,7 +304,7 @@
       document.getElementById("liveShuffle").innerHTML = "";
       if(end==undefined){
         document.getElementById("liveShuffle").innerHTML = "No data available";
-        console.log('liveShuffle no data')
+        console.log('liveShuffle, no data')
       }
       else{
           var n = end.length;
@@ -417,7 +417,7 @@
     document.getElementById("linePlott").innerHTML = "";
     if(data==undefined){
       document.getElementById("linePlott").innerHTML = "No data available";
-      console.log('linePlot no data')
+      console.log('linePlot, no data')
     }
     else{
 
