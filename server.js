@@ -119,8 +119,22 @@ app.get('/getDetailsViewData', function(req, res){
 
   var requestedYear = yearArray[req.query.yearIndex].substring(1, 5);
   var tmp = raceNames[req.query.raceIndex].split(/[ ,]+/);
-  var requestedRaceCountry = tmp[1];
-  var requestedRaceLocality = tmp[0];
+  // var requestedRaceCountry = tmp[1];
+  // var requestedRaceLocality = tmp[0];
+
+  // need to check if the location has one or two name components (e.g. Hockenheim vs. Sao Paolo)
+  // uk, 19.06.2019 - modified
+  if (tmp[2] == undefined) {
+    var requestedRaceCountry = tmp[1];
+    var requestedRaceLocality = tmp[0];
+  }
+  else {
+    var requestedRaceCountry = tmp[2];
+    var requestedRaceLocality = tmp[0] + " " + tmp[1];
+  }
+  // end modification uk, 19.06.2019
+
+
   var results = raceResults[requestedYear]
   var laptimes;
   var places;
