@@ -9,7 +9,7 @@
     "ergast-client": "^0.2.8",
     "express": "^4.14.1",
     "http-post": "^0.1.1",
-    "http-proxy": "^1.8.1",
+    "http-proxy": "^1.18.1",
     "request": "^2.88.0"
   },
   "main": "server.js",
