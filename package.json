@@ -7,7 +7,7 @@
     "commander": "^2.6.0",
     "d3": "^5.7.0",
     "ergast-client": "^0.2.8",
-    "express": "^4.14.1",
+    "express": "^4.17.3",
     "http-post": "^0.1.1",
     "http-proxy": "^1.8.1",
     "request": "^2.88.0"
